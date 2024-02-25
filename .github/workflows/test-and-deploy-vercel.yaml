@@ -1,7 +1,13 @@
 name: GitHub Actions Vercel Preview Deployment
 env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  REPOSITORY_TYPE: ${{ secrets.REPOSITORY_TYPE }}
+  MONGO_BASE_URL: ${{ secrets.MONGO_BASE_URL }}
+  MONGO_DB_NAME: ${{ secrets.MONGO_DB_NAME }}
+  PG_HOST: ${{ secrets.PG_HOST }}
+  PG_PORT: ${{ secrets.PG_PORT }}
+  PG_USERNAME: ${{ secrets.PG_USERNAME }}
+  PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+  PG_DB_NAME: ${{ secrets.PG_DB_NAME }}
 on:
   push:
     branches:
@@ -19,7 +25,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
 
       - name: Install dependencies
         run: yarn
