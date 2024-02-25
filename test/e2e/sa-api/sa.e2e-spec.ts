@@ -50,7 +50,9 @@ describe('Super-admin tests (e2e)', () => {
   });
 
   beforeAll(async () => {
-    await request(app.getHttpServer()).delete('/api/testing/all-data');
+    const result = await request(app.getHttpServer()).delete('/api/testing/all-data');
+    console.log('Result: /api/testing/all-data');
+    console.log(result.status);
   });
 
   afterAll(() => {

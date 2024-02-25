@@ -10,13 +10,14 @@ import PasswordRecoveryEntity from '../../src/modules/users/entities/password-re
 import { AppModule } from '../../src/app.module';
 import { UsersModule } from '../../src/modules/users/users.module';
 import { CreateUserDto } from '../../src/modules/users/models/input/create-user.dto';
-import { DataSource } from 'typeorm';
 import { Model } from 'mongoose';
 import { UserDocument, UserMongoEntity } from '../../src/modules/users/repository/mongoose/schemas/user.schema';
 import { getModelToken } from '@nestjs/mongoose';
 import { randomUUID } from 'crypto';
+import { DataSource } from 'typeorm';
 
 describe('Unit Tests: UsersService', () => {
+  let module: TestingModule = null;
   let usersService: UsersService;
   let usersRepository: UsersRepository;
   let dbConfigService: DbConfigService;
@@ -24,7 +25,7 @@ describe('Unit Tests: UsersService', () => {
   let userModel: Model<UserDocument>;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       imports: [AppModule, UsersModule],
       providers: [UsersService],
     }).compile();
@@ -36,8 +37,16 @@ describe('Unit Tests: UsersService', () => {
     userModel = module.get<Model<UserDocument>>(getModelToken(UserMongoEntity.name));
   });
 
+  afterEach(async () => {
+    if (module) {
+      // close database connections
+      await module.close();
+    }
+  });
+
   describe('Test Suit UsersService', () => {
     it('UsersService And UsersRepository should be defined', () => {
+      console.log(`Tests Started ${new Date()}`);
       expect(usersService).toBeDefined();
       expect(usersRepository).toBeDefined();
     });
@@ -83,20 +92,17 @@ describe('Unit Tests: UsersService', () => {
           'SELECT ac.id as "accountId", ac.login as "login", ac.email as "email", ac.password_hash as "passwordHash" FROM public."account" ac WHERE ac.id = $1;';
         const findUserAccountResult = await dataSource.query(findUserAccountQuery, [findUserResult[0].accountId]);
 
-        console.log('findUserAccountResult');
-        console.log(findUserAccountResult);
         expect(findUserAccountResult[0]).toBeDefined();
         expect(findUserAccountResult[0].login).toBe(testUserEntity.accountData.login);
         expect(findUserAccountResult[0].email).toBe(testUserEntity.accountData.email);
       } else {
         // Test Mongo
         const findModel = await userModel.findOne({ id: result.id });
-        console.log('findModel');
-        console.log(findModel);
         expect(findModel).toBeDefined();
         expect(findModel.accountData.login).toBe(testUserEntity.accountData.login);
         expect(findModel.accountData.email).toBe(testUserEntity.accountData.email);
       }
+      console.log(`Tests Ended ${new Date()}`);
     });
   });
 });

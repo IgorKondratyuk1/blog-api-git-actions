@@ -383,7 +383,7 @@ describe('Blogger (e2e)', () => {
       };
 
       const result = await request(app.getHttpServer())
-        .put('/api/blogger/blogs/1111')
+        .put('/api/blogger/blogs/aae9e939-eeb7-4543-8476-ad831d4a25b8')
         .set('Authorization', `Bearer ${testsData.jwtToken}`)
         .send(updateBlogModel);
 
@@ -393,7 +393,7 @@ describe('Blogger (e2e)', () => {
     // DELETE
     it('DELETE: blog shouldn`t be deleted (wrong id)', async () => {
       const result = await request(app.getHttpServer())
-        .delete('/api/blogger/blogs/1111')
+        .delete('/api/blogger/blogs/aae9e939-eeb7-4543-8476-ad831d4a25b8')
         .set('Authorization', `Bearer ${testsData.jwtToken}`);
 
       expect(result.status).toBe(404);
