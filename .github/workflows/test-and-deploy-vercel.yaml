@@ -1,4 +1,4 @@
-name: GitHub Actions Vercel Preview Deployment
+name: GitHub Actions Preview Deployment
 env:
   REPOSITORY_TYPE: ${{ secrets.REPOSITORY_TYPE }}
   MONGO_BASE_URL: ${{ secrets.MONGO_BASE_URL }}
@@ -23,6 +23,12 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Get Secret REPOSITORY_TYPE
+        run: echo "REPOSITORY_TYPE is ${{ secrets.REPOSITORY_TYPE }}"
+
+      - name: Get Secret PG_HOST
+        run: echo "PG_HOST is ${{ secrets.PG_HOST }}"
+
       - name: Checkout
         uses: actions/checkout@v4
 
