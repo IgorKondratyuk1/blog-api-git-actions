@@ -32,7 +32,7 @@ jobs:
         run: yarn
 
       - name: Install jest/testing dependencies
-        run: yarn add jest @automock/jest @nestjs/testing
+        run: yarn add jest ts-jest @types/jest @automock/jest @nestjs/testing
 
       - name: Test
         run: yarn test:integration
