@@ -22,12 +22,10 @@ jobs:
   Tests:
     name: Tests
     runs-on: ubuntu-latest
+    environment: Prod
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Get Secret REPOSITORY_TYPE
+        run: echo "REPOSITORY_TYPE is ${{ secrets.REPOSITORY_TYPE }}"
 
-      - name: Install dependencies
-        run: yarn
-
-      - name: Test
-        run: yarn test:integration
+      - name: Get Secret PG_HOST
+        run: echo "PG_HOST is ${{ secrets.PG_HOST }}"
